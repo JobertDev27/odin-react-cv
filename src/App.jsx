@@ -1,116 +1,106 @@
-import './css/index.css';
-import './css/resume.css'
-import './css/form.css'
+import "./css/index.css";
+import "./css/form.css";
+import Resume from "./Resume";
 import { useState } from "react";
 
+function InputHandler({ value, setValue }) {
+  return (
+    <input
+      type="text"
+      value={value}
+      onChange={(e) => {
+        setValue(e.target.value);
+      }}
+    />
+  );
+}
+function Form({ formData, handleData, skillList, removeSkill }) {
+  const [skill, setSkill] = useState("");
 
-// TODO
+  return (
+    <div className="form-input">
+      <div className="container">
+        <p>Name</p>
+        <InputHandler
+          value={formData.name}
+          setValue={(val) => handleData("name", val)}
+        />
+        <p>Contact Number</p>
+        <InputHandler
+          value={formData.number}
+          setValue={(val) => handleData("number", val)}
+        />
+        <p>Email Address</p>
+        <InputHandler
+          value={formData.email}
+          setValue={(val) => handleData("email", val)}
+        />
+      </div>
 
-// Learn how to target element with onchange
-
-
-
-
-
-
-
-
-
-
-
-
-function TextInput () {
-    const [text, setText] = useState({value : "name"});
-    
-    return (
-        <input type='text' onChange={(e) => {
-            setText({text, value : e.target.value})
-        }} />
-    )
+      <div className="container">
+        <p>Skills : Maximum of 8</p>
+        <InputHandler
+          value={skill}
+          setValue={(val) => {
+            setSkill(val);
+          }}
+        />
+        <button
+          onClick={() => {
+            if (skill.trim() === "") return;
+            handleData("skill", skill);
+            setSkill("");
+          }}
+        >
+          Add
+        </button>
+        <ul className="skills-container">
+          {skillList.map((item, index) => (
+            <li key={index}>
+              <p>{item}</p>
+              <button onClick={() => removeSkill(index)}>X</button>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  );
 }
 
-function Form () {
-    return (
-        <div className='form-input'>
-            <div className='container'>
-                <p>name</p>
-                <TextInput />
-            </div>
-        </div>
-    )
-}
+export default function App() {
+  const [form, setForm] = useState({
+    name: "",
+    number: "",
+    email: "",
+    skill: [],
+    experience: [],
+    experienceInfo: {},
+    education: "",
+  });
 
-function Resume () {
-    return (
-        <div className="resume-body">
-            <div className="header">
-                <h1>Jobert Poylan Jr</h1>
-                <div className="contact">
-                    <p>0912345678910</p>
-                    <p>jobertpoylanjr@gmail.com</p>
-                </div>
-                
-            </div>
-            
-            <div className="line-design"></div>
-            <h2>Skils:</h2>
-            <div className="skill-list">
-                <p>html</p>
-                <p>CSS</p>
-                <p>Javascript</p>
-                <p>React</p>
-                <p>Java</p>
-                <p>Godot</p>
-                <p>Python</p>
-                <p>Webpack</p>
-            </div>
+  function handleData(key, value) {
+    setForm((prev) => ({
+      ...prev,
+      [key]: Array.isArray(prev[key]) ? [...prev[key], value] : value,
+    }));
+  }
 
-            <div className="line-design"></div>
-            <h2>Experience:</h2>
-            <div className="experience-list">
-                <div className="exp-container">
-                    <p className="job-company">Google <span className="date"> &bull; 2020 - now</span></p>
-                    <p>Senior Developer</p>
-                </div>
-                <div className="exp-container">
-                    <p className="job-company">Facebook <span className="date"> &bull; 2015 - 2020</span></p>
-                    <p>Devops</p>
-                </div>
-            </div>
-            <div className="experience-list">
-                <div className="exp-container">
-                    <p className="job-company">Google <span className="date"> &bull; 2012 - 2014</span></p>
-                    <p>Software Engineer</p>
-                </div>
-                <div className="exp-container">
-                    <p className="job-company">Telus <span className="date"> &bull; 2009 - 2012</span></p>
-                    <p>Junior Developer</p>
-                </div>
-            </div>
+  function removeSkill(index) {
+    setForm((prev) => ({
+      ...prev,
+      skill: prev.skill.filter((_, i) => i !== index),
+    }));
+  }
 
-            <div className="line-design"></div>
-            <h2>Education:</h2>
-            <div className="education">
-                <div className="education-list">
-                    <div className="edu-container">
-                        <p className="school">Ateneo<span className="date"> &bull; 2007 - 2009</span></p>
-                        <p>Software Engineer</p>
-                    </div>
-                    <div className="education-list">
-                        <p className="school">University of Iloilo <span className="date"> &bull; 2003 - 2007</span></p>
-                        <p>Information Technology</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    )
-}
-
-export default function App () {
-    return (
-        <main>
-            <Form />
-            <Resume />
-        </main>
-    )
+  return (
+    <main>
+      <Form
+        formData={form}
+        handleData={handleData}
+        skillList={form.skill}
+        removeSkill={removeSkill}
+      />
+      <Resume formData={form} />
+    </main>
+  );
 }

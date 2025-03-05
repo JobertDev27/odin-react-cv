@@ -1,0 +1,12 @@
+:root {
+  --background : #252422;
+}
+
+body {
+  background-color: var(--background);
+}
+
+main {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+}
