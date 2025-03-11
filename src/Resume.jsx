@@ -4,6 +4,16 @@ export default function Resume({ formData }) {
   const skill = formData.skill.map((element, index) => (
     <li key={index}>{element}</li>
   ));
+
+  const exp = formData.experience.map((element, index) => (
+    <div className="exp-container" key={index}>
+      <p className="job-company">
+        {element.company} <span className="date"> &bull; {element.date}</span>
+      </p>
+      <p>{element.title}</p>
+    </div>
+  ));
+
   return (
     <div className="resume-body">
       <div className="header">
@@ -22,34 +32,7 @@ export default function Resume({ formData }) {
 
       <div className="line-design"></div>
       <h2>Experience:</h2>
-      <div className="experience-list">
-        <div className="exp-container">
-          <p className="job-company">
-            Google <span className="date"> &bull; 2020 - now</span>
-          </p>
-          <p>Senior Developer</p>
-        </div>
-        <div className="exp-container">
-          <p className="job-company">
-            Facebook <span className="date"> &bull; 2015 - 2020</span>
-          </p>
-          <p>Devops</p>
-        </div>
-      </div>
-      <div className="experience-list">
-        <div className="exp-container">
-          <p className="job-company">
-            Google <span className="date"> &bull; 2012 - 2014</span>
-          </p>
-          <p>Software Engineer</p>
-        </div>
-        <div className="exp-container">
-          <p className="job-company">
-            Telus <span className="date"> &bull; 2009 - 2012</span>
-          </p>
-          <p>Junior Developer</p>
-        </div>
-      </div>
+      <div className="experience-list">{exp}</div>
 
       <div className="line-design"></div>
       <h2>Education:</h2>
