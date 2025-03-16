@@ -14,6 +14,15 @@ export default function Resume({ formData }) {
     </div>
   ));
 
+  const edu = formData.education.map((element, index) => (
+    <div className="edu-container" key={index}>
+      <p className="school">
+        {element.school} <span className="date"> &bull; {element.date}</span>
+      </p>
+      <p>{element.school}</p>
+    </div>
+  ));
+
   return (
     <div className="resume-body">
       <div className="header">
@@ -36,23 +45,7 @@ export default function Resume({ formData }) {
 
       <div className="line-design"></div>
       <h2>Education:</h2>
-      <div className="education">
-        <div className="education-list">
-          <div className="edu-container">
-            <p className="school">
-              Ateneo<span className="date"> &bull; 2007 - 2009</span>
-            </p>
-            <p>Software Engineer</p>
-          </div>
-          <div className="education-list">
-            <p className="school">
-              University of Iloilo{" "}
-              <span className="date"> &bull; 2003 - 2007</span>
-            </p>
-            <p>Information Technology</p>
-          </div>
-        </div>
-      </div>
+      <div className="education">{edu}</div>
     </div>
   );
 }

@@ -22,6 +22,13 @@ export default function Form({ formData, handleData, skillList, removeSkill }) {
     date: "",
     title: "",
   });
+  const [edu, setEdu] = useState({
+    school: "",
+    start: "",
+    end: "",
+    date: "",
+    course: "",
+  });
 
   function formatDate(date) {
     if (!date) return "Present";
@@ -138,6 +145,57 @@ export default function Form({ formData, handleData, skillList, removeSkill }) {
               setJob({
                 company: "",
                 title: "",
+                start: "",
+                date: "",
+                end: "",
+              });
+            });
+          }}
+        >
+          Submit
+        </button>
+      </div>
+
+      <div className="container">
+        <p>School</p>
+        <InputHandler
+          value={edu.school}
+          setValue={(value) => setEdu((prev) => ({ ...prev, school: value }))}
+          type={"text"}
+        />
+        <p>Date</p>
+        <InputHandler
+          value={edu.start}
+          setValue={(value) => setEdu((prev) => ({ ...prev, start: value }))}
+          type={"month"}
+        />
+        <span> to </span>
+        <InputHandler
+          value={edu.start}
+          setValue={(value) => setEdu((prev) => ({ ...prev, start: value }))}
+          type={"month"}
+        />
+        <p>Course</p>
+        <InputHandler
+          value={edu.course}
+          setValue={(value) => setEdu((prev) => ({ ...prev, course: value }))}
+          type={"text"}
+        />
+        <button
+          onClick={() => {
+            if (edu.school.trim() === "" || edu.course.trim() === "") return;
+            const updatedEdu = {
+              ...edu,
+              date: `${formatDate(edu.start)} to ${formatDate(edu.end)}`,
+            };
+
+            setEdu(updatedEdu);
+            handleData("education", updatedEdu);
+
+            setTimeout(() => {
+              setEdu({
+                school: "",
+                course: "",
                 start: "",
                 date: "",
                 end: "",

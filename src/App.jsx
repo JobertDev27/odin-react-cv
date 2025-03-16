@@ -2,6 +2,17 @@ import "./css/index.css";
 import Form from "./Form";
 import Resume from "./Resume";
 import { useState } from "react";
+import { usePDF } from "react-to-pdf";
+
+const SavePdf = ({ file }) => {
+  const { toPDF, targetRef } = usePDF({ filename: "resume.pdf" });
+  return (
+    <div>
+      <button onClick={() => toPDF()}>Download PDF</button>
+      <div ref={targetRef}>{file}</div>
+    </div>
+  );
+};
 
 export default function App() {
   const [form, setForm] = useState({
@@ -10,7 +21,7 @@ export default function App() {
     email: "",
     skill: [],
     experience: [],
-    education: "",
+    education: [],
   });
 
   function handleData(key, value) {
@@ -35,7 +46,9 @@ export default function App() {
         skillList={form.skill}
         removeSkill={removeSkill}
       />
-      <Resume formData={form} />
+      <div>
+        <SavePdf file={<Resume formData={form} />} />
+      </div>
     </main>
   );
 }
